@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% include 'header.html' %}
+<h1 class="text-center">Your Todo List</h1>
+{#{% import 'bootstrap/wtf.html' as wtf %}#}
+{#{{ wtf.quick_form(form, method='POST', action="") }}#}
+<div class="container mb-5">
+    <form action="" ,class=" btn btn-success " method="post">
+        {{ form.csrf_token }}
+        <p>{{ form.title.label }}: {{ form.title(size=20) }}</p>
+        <p>Date: {{ form.end_date(size=20) }} </p>
+        <input type="submit" class="btn btn-success">
+
+
+    </form>
+</div>
+{% if entry_list %}
+
+    <ol class="list-group ">
+        {% for entry in entry_list %}
+            {% if entry.completed %}
+                <li class="list-group-item-dark d-flex justify-content-between align-items-start mb-1 ">
+                    <div class="ps-2">
+                        <a href='{{ url_for('completed_todo', id=entry.id, value=False) }}'>
+                            <i class="fa fa-check-square-o text-success"></i>
+                        </a></div>
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">
+                            <del>{{ entry.title }}</del>
+                        </div>
+                        To be Completed: {{ entry.end_date }}
+                    </div>
+                    <a class="btn btn-secondary mx-2" href="{{ url_for('delete_todo', id=entry.id) }}"><i
+                            class="fa fa-trash-o"></i></a>
+                </li>
+            {% else %}
+                <li class="list-group-item d-flex justify-content-between align-items-start mb-1 ">
+                    <div class="ps-2">
+                        <a href='{{ url_for('completed_todo', id=entry.id, value=True) }}'>
+                            <i class="fa fa-check-square-o text-secondary"></i>
+                        </a></div>
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{ entry.title }} </div>
+                        To be Completed: {{ entry.end_date }}
+                    </div>
+                    <a class="btn btn-primary mx-2" href="{{ url_for('delete_todo', id=entry.id) }}"><i
+                            class="fa fa-trash-o"></i></a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+    </ol>
+
+
+
+{% endif %}
+{% include 'footer.html' %}
